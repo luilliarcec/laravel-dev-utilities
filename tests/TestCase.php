@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Luilliarcec\DevUtilities\DevUtilitiesServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 use Tests\Utils\User;
 
@@ -68,7 +69,10 @@ class TestCase extends Orchestra
 
         $router->get('/filters', function (Request $request) {
             $data = QueryBuilder::for(User::class)
-                ->allowedFilters(['name'])
+                ->allowedFilters([
+                    'name',
+                    AllowedFilter::trashed('state')
+                ])
                 ->get();
 
             return $this->list($data, 'name');

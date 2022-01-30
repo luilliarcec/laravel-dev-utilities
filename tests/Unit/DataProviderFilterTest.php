@@ -83,6 +83,36 @@ class DataProviderFilterTest extends TestCase
             'filter by name' => [
                 new Filters(filter: 'name', see: 'LUIS', dontSee: ['ANDRES', 'BEN', 'CARLOS'])
             ],
+
+            'filter by state (without trashed)' => [
+                new Filters(
+                    filter: 'state',
+                    see: 'Luis',
+                    dontSee: ['Carlos', 'Juan'],
+                    parameters: 'without',
+                    field: 'deleted_at',
+                    seed: function () {
+                        User::create(['name' => 'Luis']);
+                        User::create(['name' => 'Carlos'])->delete();
+                        User::create(['name' => 'Juan'])->delete();
+                    }
+                )
+            ],
+
+            'filter by state (only trashed)' => [
+                new Filters(
+                    filter: 'state',
+                    see: 'Carlos',
+                    dontSee: ['Luis', 'Juan'],
+                    parameters: 'only',
+                    field: 'deleted_at',
+                    seed: function () {
+                        User::create(['name' => 'Luis']);
+                        User::create(['name' => 'Carlos'])->delete();
+                        User::create(['name' => 'Juan']);
+                    }
+                )
+            ],
         ];
     }
 }
