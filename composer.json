@@ -1,0 +1,55 @@
+{
+    "name": "luilliarcec/laravel-dev-utilities",
+    "description": "Laravel Utilities it's a package that includes common utilities for projects in dev environments.",
+    "keywords": [
+        "luilliarcec",
+        "laravel-dev-utilities",
+        "laravel",
+        "utilities"
+    ],
+    "homepage": "https://github.com/luilliarcec/laravel-dev-utilities",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Luis Andrés Arce C.",
+            "email": "luilliarcec@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "laravel/framework": "^8.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.18",
+        "orchestra/testbench": "^5.0|^6.0",
+        "phpunit/phpunit": "^8.0",
+        "spatie/laravel-query-builder": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Luilliarcec\\DevUtilities\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "fix": "php-cs-fixer fix",
+        "test-coverage": "phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Luilliarcec\\DevUtilities\\DevUtilitiesServiceProvider"
+            ]
+        }
+    }
+}
