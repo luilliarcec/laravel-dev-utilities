@@ -10,7 +10,7 @@
 You can install the package via composer:
 
 ```bash
-composer require luilliarcec/laravel-dev-utilities
+composer require luilliarcec/laravel-dev-utilities --dev
 ```
 
 ## Changelog
