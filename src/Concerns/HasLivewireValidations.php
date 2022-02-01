@@ -2,7 +2,6 @@
 
 namespace Luilliarcec\DevUtilities\Concerns;
 
-use Illuminate\Testing\TestResponse;
 use Luilliarcec\DevUtilities\DataProviders\Validations;
 
 trait HasLivewireValidations
@@ -11,8 +10,11 @@ trait HasLivewireValidations
     {
         $validation->init();
 
+        foreach ($validation->data as $key => $value) {
+            $component->set($key, $value);
+        }
+
         return $component
-            ->set($validation->field, $validation->value)
             ->call($method)
             ->assertHasErrors([$validation->field => $validation->rule]);
     }
