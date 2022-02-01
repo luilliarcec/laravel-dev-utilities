@@ -7,7 +7,7 @@ use Luilliarcec\DevUtilities\DataProviders\Validations;
 
 trait HasLivewireValidations
 {
-    public function assertValidation(Validations $validation, string $method, mixed $component): TestResponse
+    public function assertValidation(Validations $validation, string $method, mixed $component): mixed
     {
         $validation->init();
 
