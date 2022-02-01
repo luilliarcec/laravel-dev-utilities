@@ -8,9 +8,10 @@ class Validations
 
     public function __construct(
         public string         $field,
-        protected mixed       $value = null,
+        public mixed          $value = null,
         public array          $data = [],
         protected mixed       $seed = null,
+        public mixed          $rule = null,
         protected string|null $message = null,
         public string         $bag = 'default',
     )
