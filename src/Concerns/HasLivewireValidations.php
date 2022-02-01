@@ -16,6 +16,6 @@ trait HasLivewireValidations
 
         return $component
             ->call($method)
-            ->assertHasErrors([$validation->field => $validation->rule]);
+            ->assertHasErrors($validation->error);
     }
 }

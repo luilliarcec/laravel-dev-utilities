@@ -8,27 +8,23 @@ class Validations
 
     public function __construct(
         public string         $field,
-        public mixed          $value = null,
+        protected mixed       $value = null,
         public array          $data = [],
         protected mixed       $seed = null,
-        public mixed          $rule = null,
+        protected string|null $errorKey = null,
+        protected string|null $rule = null,
         protected string|null $message = null,
         public string         $bag = 'default',
     )
     {
-        $this->error = $this->field;
+        $this->errorKey = $this->errorKey ?: $this->field;
     }
 
     public function init()
     {
         $this->seed();
         $this->data();
-
-        if ($this->message) {
-            $this->error = [
-                $this->field => $this->message
-            ];
-        }
+        $this->error();
     }
 
     protected function seed()
@@ -48,5 +44,20 @@ class Validations
                 ? $value()
                 : $value
         ]);
+    }
+
+    protected function error()
+    {
+        $this->error = $this->errorKey;
+
+        if ($this->message) {
+            $this->error = [
+                $this->errorKey => $this->message
+            ];
+        } elseif ($this->rule) {
+            $this->error = [
+                $this->errorKey => $this->rule
+            ];
+        }
     }
 }
