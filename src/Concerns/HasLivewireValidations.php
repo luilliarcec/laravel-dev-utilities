@@ -6,7 +6,7 @@ use Luilliarcec\DevUtilities\DataProviders\Validations;
 
 trait HasLivewireValidations
 {
-    public function assertValidation(Validations $validation, string $method, mixed $component): mixed
+    public function assertValidation(Validations $validation, mixed $component, ?string $method = null): mixed
     {
         $validation->init();
 
@@ -14,8 +14,11 @@ trait HasLivewireValidations
             $component->set($key, $value);
         }
 
+        if ($method) {
+            $component->call($method);
+        }
+
         return $component
-            ->call($method)
             ->assertHasErrors($validation->error);
     }
 }
