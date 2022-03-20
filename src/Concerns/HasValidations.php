@@ -7,9 +7,14 @@ use Luilliarcec\DevUtilities\DataProviders\Validations;
 
 trait HasValidations
 {
-    public function assertValidation(string $uri, Validations $validation, string $method = 'post', string|null $from = null): TestResponse
-    {
-        $validation->init();
+    public function assertValidation(
+        string $uri,
+        Validations $validation,
+        string $method = 'post',
+        string|null $from = null,
+        array $data = []
+    ): TestResponse {
+        $validation->init($data);
 
         return is_null($from)
             ? $this->{$method}($uri, $validation->data)

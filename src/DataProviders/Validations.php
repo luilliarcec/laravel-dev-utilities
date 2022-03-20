@@ -20,18 +20,18 @@ class Validations
         $this->errorKey = $this->errorKey ?: $this->field;
     }
 
-    public function init()
+    public function init(array $data = [])
     {
-        $this->seed();
+        $this->seed($data);
         $this->data();
         $this->error();
     }
 
-    protected function seed()
+    protected function seed(array $data)
     {
         if (is_callable($this->seed)) {
             $callback = $this->seed;
-            $callback();
+            $callback($data);
         }
     }
 
