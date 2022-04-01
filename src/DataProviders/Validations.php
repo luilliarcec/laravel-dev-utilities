@@ -7,16 +7,16 @@ class Validations
     public string|array $error;
 
     public function __construct(
-        public string         $field,
-        protected mixed       $value = null,
-        public array          $data = [],
-        protected mixed       $seed = null,
+        public string $field,
+        protected mixed $value = null,
+        public array $data = [],
+        protected mixed $seed = null,
         protected string|null $errorKey = null,
         protected string|null $rule = null,
         protected string|null $message = null,
-        public string         $bag = 'default',
-    )
-    {
+        public string $bag = 'default',
+        public bool $isValid = false
+    ) {
         $this->errorKey = $this->errorKey ?: $this->field;
     }
 

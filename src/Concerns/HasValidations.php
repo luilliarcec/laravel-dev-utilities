@@ -16,10 +16,14 @@ trait HasValidations
     ): TestResponse {
         $validation->init($data);
 
-        return is_null($from)
+        $request = is_null($from)
             ? $this->{$method}($uri, $validation->data)
-                ->assertInvalid($validation->error, $validation->bag)
-            : $this->from($from)->{$method}($uri, $validation->data)
-                ->assertInvalid($validation->error, $validation->bag);
+            : $this->from($from)->{$method}($uri, $validation->data);
+
+        if ($validation->isValid) {
+            return $request->assertValid($validation->field, $validation->bag);
+        }
+
+        return $request->assertInvalid($validation->error, $validation->bag);
     }
 }

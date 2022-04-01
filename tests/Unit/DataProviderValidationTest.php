@@ -67,10 +67,30 @@ class DataProviderValidationTest extends TestCase
     public function validations(): array
     {
         return [
-            'first_name is required' => [new Validations(field: 'first_name')],
-            'first_name is string' => [new Validations(field: 'first_name', value: [])],
-            'first_name is min:5' => [new Validations(field: 'first_name', value: 'Lui', message: 'The first name must be at least 5 characters.')],
-
+            'first_name is required' => [
+                new Validations(
+                    field: 'first_name'
+                )
+            ],
+            'first_name is string' => [
+                new Validations(
+                    field: 'first_name',
+                    value: []
+                )
+            ],
+            'first_name is min:5' => [
+                new Validations(
+                    field: 'first_name',
+                    value: 'Lui',
+                    message: 'The first name must be at least 5 characters.'
+                )
+            ],
+            'email is nullable' => [
+                new Validations(
+                    field: 'email',
+                    isValid: true
+                )
+            ],
             'email is unique' => [
                 new Validations(
                     field: 'email',

@@ -55,7 +55,7 @@ class TestCase extends Orchestra
         $router->post('/form', function (Request $request) {
             $request->validate([
                 'first_name' => 'bail|required|string|min:5|max:30',
-                'email' => 'unique:users,email'
+                'email' => 'nullable|unique:users,email'
             ]);
         });
 
