@@ -20,10 +20,8 @@ trait HasValidations
             ? $this->{$method}($uri, $validation->data)
             : $this->from($from)->{$method}($uri, $validation->data);
 
-        if ($validation->isValid) {
-            return $request->assertValid($validation->field, $validation->bag);
-        }
-
-        return $request->assertInvalid($validation->error, $validation->bag);
+        return $validation->isValid
+            ? $request->assertValid($validation->field, $validation->bag)
+            : $request->assertInvalid($validation->error, $validation->bag);
     }
 }
