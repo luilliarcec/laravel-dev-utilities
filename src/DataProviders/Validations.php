@@ -42,7 +42,7 @@ class Validations
         $this->data = array_merge($this->data, [
             $this->field => is_callable($value)
                 ? $value()
-                : $value
+                : $value,
         ]);
     }
 
@@ -52,11 +52,11 @@ class Validations
 
         if ($this->message) {
             $this->error = [
-                $this->errorKey => $this->message
+                $this->errorKey => $this->message,
             ];
         } elseif ($this->rule) {
             $this->error = [
-                $this->errorKey => $this->rule
+                $this->errorKey => $this->rule,
             ];
         }
     }

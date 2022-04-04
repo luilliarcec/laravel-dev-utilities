@@ -8,10 +8,9 @@ class Fields
 
     public function __construct(
         public string $field,
-        public array  $see,
-        public array  $dontSee,
-    )
-    {
+        public array $see,
+        public array $dontSee,
+    ) {
         $this->parameters = $this->parameters();
     }
 

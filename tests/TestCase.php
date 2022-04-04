@@ -19,7 +19,7 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom(__DIR__ . '/Utils/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/Utils/migrations');
     }
 
     protected function getPackageProviders($app): array
@@ -37,7 +37,7 @@ class TestCase extends Orchestra
         $app['config']->set('database.default', 'testdb');
         $app['config']->set('database.connections.testdb', [
             'driver' => 'sqlite',
-            'database' => ':memory:'
+            'database' => ':memory:',
         ]);
 
         /** Filters */
@@ -55,7 +55,7 @@ class TestCase extends Orchestra
         $router->post('/form', function (Request $request) {
             $request->validate([
                 'first_name' => 'bail|required|string|min:5|max:30',
-                'email' => 'nullable|unique:users,email'
+                'email' => 'nullable|unique:users,email',
             ]);
         });
 
@@ -71,7 +71,7 @@ class TestCase extends Orchestra
             $data = QueryBuilder::for(User::class)
                 ->allowedFilters([
                     'name',
-                    AllowedFilter::trashed('state')
+                    AllowedFilter::trashed('state'),
                 ])
                 ->get();
 
