@@ -4,7 +4,7 @@ namespace Luilliarcec\DevUtilities\DataProviders;
 
 use Illuminate\Support\Str;
 
-class Sorters
+class Sorter
 {
     public string $parameters;
     protected string $prefix = 'sort';

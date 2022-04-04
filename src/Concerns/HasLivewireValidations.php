@@ -2,11 +2,11 @@
 
 namespace Luilliarcec\DevUtilities\Concerns;
 
-use Luilliarcec\DevUtilities\DataProviders\Validations;
+use Luilliarcec\DevUtilities\DataProviders\Validation;
 
 trait HasLivewireValidations
 {
-    public function assertValidation(Validations $validation, mixed $component, ?string $method = null): mixed
+    public function assertValidation(Validation $validation, mixed $component, ?string $method = null): mixed
     {
         $validation->init();
 

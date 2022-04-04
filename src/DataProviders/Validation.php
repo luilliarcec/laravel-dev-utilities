@@ -2,7 +2,7 @@
 
 namespace Luilliarcec\DevUtilities\DataProviders;
 
-class Validations
+class Validation
 {
     public string|array $error;
 

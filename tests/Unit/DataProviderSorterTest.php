@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Exception;
 use Luilliarcec\DevUtilities\Concerns\HasSorters;
-use Luilliarcec\DevUtilities\DataProviders\Sorters;
+use Luilliarcec\DevUtilities\DataProviders\Sorter;
 use Tests\TestCase;
 use Tests\Utils\User;
 
@@ -14,7 +14,7 @@ class DataProviderSorterTest extends TestCase
 
     public function test_that_the_data_is_accessible()
     {
-        $provider = new Sorters(
+        $provider = new Sorter(
             sort: 'first_name', data: ['Luis', 'Carlos', 'Andres'],
         );
 
@@ -26,7 +26,7 @@ class DataProviderSorterTest extends TestCase
     {
         $this->expectExceptionMessage('Faker exception caused by seed function called on init function');
 
-        $provider = new Sorters(
+        $provider = new Sorter(
             sort: 'first_name', data: ['Luis', 'Carlos', 'Andres'],
             seed: fn () => throw new Exception('Faker exception caused by seed function called on init function')
         );
@@ -44,15 +44,15 @@ class DataProviderSorterTest extends TestCase
     {
         return [
             'sort by asc name' => [
-                new Sorters(sort: 'name', data: ['ANDRES', 'BEN', 'CARLOS']),
+                new Sorter(sort: 'name', data: ['ANDRES', 'BEN', 'CARLOS']),
             ],
 
             'sort by asc -name' => [
-                new Sorters(sort: '-name', data: ['CARLOS', 'BEN', 'ANDRES']),
+                new Sorter(sort: '-name', data: ['CARLOS', 'BEN', 'ANDRES']),
             ],
 
             'sort by asc name with values' => [
-                new Sorters(sort: 'name', data: ['andres', 'ben', 'carlos'], values: ['andres', 'ben', 'carlos']),
+                new Sorter(sort: 'name', data: ['andres', 'ben', 'carlos'], values: ['andres', 'ben', 'carlos']),
             ],
         ];
     }

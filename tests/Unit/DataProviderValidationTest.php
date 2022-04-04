@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Exception;
 use Luilliarcec\DevUtilities\Concerns\HasValidations;
-use Luilliarcec\DevUtilities\DataProviders\Validations;
+use Luilliarcec\DevUtilities\DataProviders\Validation;
 use Tests\TestCase;
 use Tests\Utils\User;
 
@@ -14,7 +14,7 @@ class DataProviderValidationTest extends TestCase
 
     public function test_that_the_data_is_accessible()
     {
-        $provider = new Validations(
+        $provider = new Validation(
             field: 'first_name', value: 'Luis Arce',
             data: ['key' => 'value'],
             message: 'This is a error message', bag: 'default'
@@ -24,7 +24,7 @@ class DataProviderValidationTest extends TestCase
         $this->assertEquals(['key' => 'value'], $provider->data);
         $this->assertEquals('default', $provider->bag);
 
-        $provider = new Validations(field: 'first_name', value: fn () => 'Chester');
+        $provider = new Validation(field: 'first_name', value: fn () => 'Chester');
 
         $provider->init();
 
@@ -38,7 +38,7 @@ class DataProviderValidationTest extends TestCase
     {
         $this->expectExceptionMessage('Faker exception caused by seed function called on init function');
 
-        $provider = new Validations(
+        $provider = new Validation(
             field: 'first_name',
             seed: fn () => throw new Exception('Faker exception caused by seed function called on init function')
         );
@@ -48,7 +48,7 @@ class DataProviderValidationTest extends TestCase
 
     public function test_that_the_data_merge_with_the_value_field_to_validate_in_the_init_function()
     {
-        $provider = new Validations(field: 'first_name', value: 'Luis', data: ['key' => 'value']);
+        $provider = new Validation(field: 'first_name', value: 'Luis', data: ['key' => 'value']);
 
         $provider->init();
 
@@ -68,31 +68,31 @@ class DataProviderValidationTest extends TestCase
     {
         return [
             'first_name is required' => [
-                new Validations(
+                new Validation(
                     field: 'first_name'
                 ),
             ],
             'first_name is string' => [
-                new Validations(
+                new Validation(
                     field: 'first_name',
                     value: []
                 ),
             ],
             'first_name is min:5' => [
-                new Validations(
+                new Validation(
                     field: 'first_name',
                     value: 'Lui',
                     message: 'The first name must be at least 5 characters.'
                 ),
             ],
             'email is nullable' => [
-                new Validations(
+                new Validation(
                     field: 'email',
                     isValid: true
                 ),
             ],
             'email is unique' => [
-                new Validations(
+                new Validation(
                     field: 'email',
                     value: 'luilliarcec@gmail.com',
                     seed: fn () => User::create(['name' => 'Luis', 'email' => 'luilliarcec@gmail.com']),

@@ -3,13 +3,13 @@
 namespace Luilliarcec\DevUtilities\Concerns;
 
 use Illuminate\Testing\TestResponse;
-use Luilliarcec\DevUtilities\DataProviders\Validations;
+use Luilliarcec\DevUtilities\DataProviders\Validation;
 
 trait HasValidations
 {
     public function assertValidation(
         string $uri,
-        Validations $validation,
+        Validation $validation,
         string $method = 'post',
         string|null $from = null,
         array $data = []

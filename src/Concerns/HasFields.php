@@ -3,11 +3,11 @@
 namespace Luilliarcec\DevUtilities\Concerns;
 
 use Illuminate\Testing\TestResponse;
-use Luilliarcec\DevUtilities\DataProviders\Fields;
+use Luilliarcec\DevUtilities\DataProviders\Field;
 
 trait HasFields
 {
-    public function assertShowField(string $uri, Fields $field, mixed $toggleable): TestResponse
+    public function assertShowField(string $uri, Field $field, mixed $toggleable): TestResponse
     {
         $field->init($toggleable);
 

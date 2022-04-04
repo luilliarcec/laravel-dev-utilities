@@ -2,7 +2,7 @@
 
 namespace Luilliarcec\DevUtilities\DataProviders;
 
-class Fields
+class Field
 {
     public string $parameters;
 

@@ -2,7 +2,7 @@
 
 namespace Luilliarcec\DevUtilities\DataProviders;
 
-class Filters
+class Filter
 {
     protected string $prefix = 'filter';
 

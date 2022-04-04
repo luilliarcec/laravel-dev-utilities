@@ -3,11 +3,11 @@
 namespace Luilliarcec\DevUtilities\Concerns;
 
 use Illuminate\Testing\TestResponse;
-use Luilliarcec\DevUtilities\DataProviders\Sorters;
+use Luilliarcec\DevUtilities\DataProviders\Sorter;
 
 trait HasSorters
 {
-    public function assertSortData(string $uri, Sorters $sorter, mixed $sortable): TestResponse
+    public function assertSortData(string $uri, Sorter $sorter, mixed $sortable): TestResponse
     {
         $sorter->init($sortable);
 

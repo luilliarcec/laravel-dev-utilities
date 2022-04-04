@@ -3,11 +3,11 @@
 namespace Luilliarcec\DevUtilities\Concerns;
 
 use Illuminate\Testing\TestResponse;
-use Luilliarcec\DevUtilities\DataProviders\Filters;
+use Luilliarcec\DevUtilities\DataProviders\Filter;
 
 trait HasFilters
 {
-    public function assertFilterData(string $uri, Filters $filter, mixed $filterable): void
+    public function assertFilterData(string $uri, Filter $filter, mixed $filterable): void
     {
         $filter->init($filterable);
 
@@ -20,7 +20,7 @@ trait HasFilters
         }
     }
 
-    protected function assertDataFilteredByBag(TestResponse $response, Filters $filter)
+    protected function assertDataFilteredByBag(TestResponse $response, Filter $filter)
     {
         $this->assertTrue(
             $response->original->{$filter->bag}->where($filter->field, $filter->see)->isNotEmpty()
@@ -31,7 +31,7 @@ trait HasFilters
         );
     }
 
-    protected function assertDataFilteredBySee(TestResponse $response, Filters $filter)
+    protected function assertDataFilteredBySee(TestResponse $response, Filter $filter)
     {
         $response->assertDontSee($filter->dontSee)->assertSee($filter->see);
     }
