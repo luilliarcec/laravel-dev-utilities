@@ -12,7 +12,7 @@ class DataProviderSorterTest extends TestCase
 {
     use HasSorters;
 
-    function test_that_the_data_is_accessible()
+    public function test_that_the_data_is_accessible()
     {
         $provider = new Sorters(
             sort: 'first_name', data: ['Luis', 'Carlos', 'Andres'],
@@ -22,37 +22,37 @@ class DataProviderSorterTest extends TestCase
         $this->assertEquals(['Luis', 'Carlos', 'Andres'], $provider->data);
     }
 
-    function test_that_seed_is_executed_in_the_init_function()
+    public function test_that_seed_is_executed_in_the_init_function()
     {
         $this->expectExceptionMessage('Faker exception caused by seed function called on init function');
 
         $provider = new Sorters(
             sort: 'first_name', data: ['Luis', 'Carlos', 'Andres'],
-            seed: fn() => throw new Exception('Faker exception caused by seed function called on init function')
+            seed: fn () => throw new Exception('Faker exception caused by seed function called on init function')
         );
 
         $provider->init(false);
     }
 
     /** @dataProvider sorts */
-    function test_sort_data($sorter)
+    public function test_sort_data($sorter)
     {
-        $this->assertSortData(uri: '/sorts', sorter: $sorter, sortable: fn($data) => User::create($data));
+        $this->assertSortData(uri: '/sorts', sorter: $sorter, sortable: fn ($data) => User::create($data));
     }
 
     public function sorts(): array
     {
         return [
             'sort by asc name' => [
-                new Sorters(sort: 'name', data: ['ANDRES', 'BEN', 'CARLOS'])
+                new Sorters(sort: 'name', data: ['ANDRES', 'BEN', 'CARLOS']),
             ],
 
             'sort by asc -name' => [
-                new Sorters(sort: '-name', data: ['CARLOS', 'BEN', 'ANDRES'])
+                new Sorters(sort: '-name', data: ['CARLOS', 'BEN', 'ANDRES']),
             ],
 
             'sort by asc name with values' => [
-                new Sorters(sort: 'name', data: ['andres', 'ben', 'carlos'], values: ['andres', 'ben', 'carlos'])
+                new Sorters(sort: 'name', data: ['andres', 'ben', 'carlos'], values: ['andres', 'ben', 'carlos']),
             ],
         ];
     }

@@ -8,14 +8,13 @@ class Filters
 
     public function __construct(
         protected string $filter,
-        public mixed     $see,
-        public array     $dontSee,
-        public mixed     $parameters = null,
-        public ?string   $field = null,
-        public ?string   $bag = null,
-        protected mixed  $seed = null
-    )
-    {
+        public mixed $see,
+        public array $dontSee,
+        public mixed $parameters = null,
+        public ?string $field = null,
+        public ?string $bag = null,
+        protected mixed $seed = null
+    ) {
         $this->field = $this->field ?: $this->filter;
 
         $this->parameters = $this->parameters ?: (is_string($this->see) ? $this->see : null);

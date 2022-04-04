@@ -10,13 +10,12 @@ class Sorters
     protected string $prefix = 'sort';
 
     public function __construct(
-        public string     $sort,
-        public array      $data,
-        protected array   $values = [],
+        public string $sort,
+        public array $data,
+        protected array $values = [],
         protected ?string $field = null,
-        protected mixed   $seed = null
-    )
-    {
+        protected mixed $seed = null
+    ) {
         $this->field = $this->field ?: Str::replaceFirst('-', '', $this->sort);
         $this->parameters = $this->parameters();
     }
@@ -45,7 +44,7 @@ class Sorters
     {
         collect($this->values ?: $this->data)
             ->shuffle()
-            ->each(fn($item) => $this->factory($sortable, $item));
+            ->each(fn ($item) => $this->factory($sortable, $item));
     }
 
     protected function factory(mixed $sortable, mixed $item)
