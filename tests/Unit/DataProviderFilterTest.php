@@ -35,30 +35,6 @@ class DataProviderFilterTest extends TestCase
         $this->assertEquals('filter_name', $provider->field);
     }
 
-    public function test_that_the_url_parameters_are_built()
-    {
-        $provider = new Filter(filter: 'name', see: 'Luis', dontSee: []);
-
-        $this->assertEquals(
-            'filter[name]=Luis',
-            $provider->parameters
-        );
-
-        $provider = new Filter(filter: 'name', see: 'Dont use', dontSee: [], parameters: 'luis');
-
-        $this->assertEquals(
-            'filter[name]=luis',
-            $provider->parameters
-        );
-
-        $provider = new Filter(filter: 'name', see: 'Dont use', dontSee: [], parameters: ['luis', 'Luis', 'LUIS']);
-
-        $this->assertEquals(
-            'filter[name][]=luis&filter[name][]=Luis&filter[name][]=LUIS',
-            $provider->parameters
-        );
-    }
-
     public function test_that_seed_is_executed_in_the_init_function()
     {
         $this->expectExceptionMessage('Faker exception caused by seed function called on init function');
@@ -72,7 +48,7 @@ class DataProviderFilterTest extends TestCase
     }
 
     /** @dataProvider filters */
-    public function test_sort_data($filter)
+    public function test_filter_data($filter)
     {
         $this->assertFilterData(uri: '/filters', filter: $filter, filterable: fn($data) => User::create($data));
     }
@@ -81,17 +57,21 @@ class DataProviderFilterTest extends TestCase
     {
         return [
             'filter by name' => [
-                new Filter(filter: 'name', see: 'LUIS', dontSee: ['ANDRES', 'BEN', 'CARLOS']),
+                new Filter(
+                    filter : 'name',
+                    see    : 'LUIS',
+                    dontSee: ['ANDRES', 'BEN', 'CARLOS']
+                ),
             ],
 
             'filter by state (without trashed)' => [
                 new Filter(
-                    filter    : 'state',
-                    see       : 'Luis',
-                    dontSee   : ['Carlos', 'Juan'],
-                    parameters: 'without',
-                    field     : 'deleted_at',
-                    seed      : function () {
+                    filter : 'state',
+                    see    : 'Luis',
+                    dontSee: ['Carlos', 'Juan'],
+                    value  : 'without',
+                    field  : 'deleted_at',
+                    seed   : function () {
                         User::create(['name' => 'Luis']);
                         User::create(['name' => 'Carlos'])->delete();
                         User::create(['name' => 'Juan'])->delete();
@@ -101,12 +81,12 @@ class DataProviderFilterTest extends TestCase
 
             'filter by state (only trashed)' => [
                 new Filter(
-                    filter    : 'state',
-                    see       : 'Carlos',
-                    dontSee   : ['Luis', 'Juan'],
-                    parameters: 'only',
-                    field     : 'deleted_at',
-                    seed      : function () {
+                    filter : 'state',
+                    see    : 'Carlos',
+                    dontSee: ['Luis', 'Juan'],
+                    value  : 'only',
+                    field  : 'deleted_at',
+                    seed   : function () {
                         User::create(['name' => 'Luis']);
                         User::create(['name' => 'Carlos'])->delete();
                         User::create(['name' => 'Juan']);

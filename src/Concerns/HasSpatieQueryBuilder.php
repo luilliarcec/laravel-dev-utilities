@@ -12,7 +12,9 @@ trait HasSpatieQueryBuilder
     {
         $filter->init($filterable);
 
-        $response = $this->get("$uri?$filter->parameters")->assertSuccessful();
+        $query = $this->queryBuilderForFilters($filter->filter, $filter->value);
+
+        $response = $this->get("$uri?$query")->assertSuccessful();
 
         if ($filter->bag) {
             $this->assertTrue(
@@ -30,6 +32,21 @@ trait HasSpatieQueryBuilder
             $response->assertDontSee($filter->dontSee)
                      ->assertSee($filter->see);;
         }
+    }
+
+    private function queryBuilderForFilters($filter, mixed $value): string
+    {
+        $parameter = config('query-builder.parameters.filter', 'filter');
+
+        return collect($value)
+            ->transform(function ($item) use ($parameter, $filter, $value) {
+                if (is_array($value)) {
+                    return sprintf('%s[%s][]=%s', $parameter, $filter, $item);
+                }
+
+                return sprintf('%s[%s]=%s', $parameter, $filter, $item);
+            })
+            ->implode('&');
     }
 
     public function assertSortData(string $uri, Sorter $sorter, mixed $sortable): TestResponse

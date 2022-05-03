@@ -4,21 +4,18 @@ namespace Luilliarcec\DevUtilities\DataProviders;
 
 class Filter
 {
-    protected string $prefix = 'filter';
-
     public function __construct(
-        protected string $filter,
+        public string $filter,
         public mixed $see,
         public array $dontSee,
-        public mixed $parameters = null,
+        public mixed $value = null,
         public ?string $field = null,
         public ?string $bag = null,
         protected mixed $seed = null
     ) {
         $this->field = $this->field ?: $this->filter;
 
-        $this->parameters = $this->parameters ?: (is_string($this->see) ? $this->see : null);
-        $this->parameters = $this->parameters();
+        $this->value = $this->value ?: (is_string($this->see) ? $this->see : null);
     }
 
     public function init(mixed $filterable): void
@@ -30,26 +27,13 @@ class Filter
         }
     }
 
-    protected function parameters(): string
-    {
-        return collect($this->parameters)
-            ->transform(function ($item) {
-                if (is_array($this->parameters)) {
-                    return "$this->prefix[$this->filter][]=$item";
-                }
-
-                return "$this->prefix[$this->filter]=$item";
-            })
-            ->implode('&');
-    }
-
-    protected function seed()
+    protected function seed(): void
     {
         $callback = $this->seed;
         $callback();
     }
 
-    protected function data(mixed $filterable)
+    protected function data(mixed $filterable): void
     {
         collect($this->dontSee)->each(function ($item) use ($filterable) {
             return $this->factory($filterable, $item);

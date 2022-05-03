@@ -32,6 +32,8 @@ class TestCase extends Orchestra
         $app['config']->set('app.key', 'base64:JjrFWC+TGnySY2LsldPXAxuHpyjh8UuoPMt6yy2gJ8U=');
         $app['config']->set('auth.providers.users.model', User::class);
         $app['config']->set('utilities.auth_foreign_id_column', 'user_id');
+        $app['config']->set('query-builder.parameters.filter', 'filter');
+        $app['config']->set('query-builder.parameters.sort', 'sort');
 
         /** Database */
         $app['config']->set('database.default', 'testdb');
