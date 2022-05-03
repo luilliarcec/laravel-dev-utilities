@@ -3,14 +3,14 @@
 namespace Tests\Unit;
 
 use Exception;
-use Luilliarcec\DevUtilities\Concerns\HasFilters;
+use Luilliarcec\DevUtilities\Concerns\HasSpatieQueryBuilder;
 use Luilliarcec\DevUtilities\DataProviders\Filter;
 use Tests\TestCase;
 use Tests\Utils\User;
 
 class DataProviderFilterTest extends TestCase
 {
-    use HasFilters;
+    use HasSpatieQueryBuilder;
 
     public function test_that_the_data_is_accessible()
     {
@@ -65,7 +65,7 @@ class DataProviderFilterTest extends TestCase
 
         $provider = new Filter(
             filter: 'first_name', see: 'Luis', dontSee: ['Carlos', 'Andres'],
-            seed: fn () => throw new Exception('Faker exception caused by seed function called on init function')
+            seed  : fn() => throw new Exception('Faker exception caused by seed function called on init function')
         );
 
         $provider->init(false);
@@ -74,7 +74,7 @@ class DataProviderFilterTest extends TestCase
     /** @dataProvider filters */
     public function test_sort_data($filter)
     {
-        $this->assertFilterData(uri: '/filters', filter: $filter, filterable: fn ($data) => User::create($data));
+        $this->assertFilterData(uri: '/filters', filter: $filter, filterable: fn($data) => User::create($data));
     }
 
     public function filters(): array
@@ -86,12 +86,12 @@ class DataProviderFilterTest extends TestCase
 
             'filter by state (without trashed)' => [
                 new Filter(
-                    filter: 'state',
-                    see: 'Luis',
-                    dontSee: ['Carlos', 'Juan'],
+                    filter    : 'state',
+                    see       : 'Luis',
+                    dontSee   : ['Carlos', 'Juan'],
                     parameters: 'without',
-                    field: 'deleted_at',
-                    seed: function () {
+                    field     : 'deleted_at',
+                    seed      : function () {
                         User::create(['name' => 'Luis']);
                         User::create(['name' => 'Carlos'])->delete();
                         User::create(['name' => 'Juan'])->delete();
@@ -101,12 +101,12 @@ class DataProviderFilterTest extends TestCase
 
             'filter by state (only trashed)' => [
                 new Filter(
-                    filter: 'state',
-                    see: 'Carlos',
-                    dontSee: ['Luis', 'Juan'],
+                    filter    : 'state',
+                    see       : 'Carlos',
+                    dontSee   : ['Luis', 'Juan'],
                     parameters: 'only',
-                    field: 'deleted_at',
-                    seed: function () {
+                    field     : 'deleted_at',
+                    seed      : function () {
                         User::create(['name' => 'Luis']);
                         User::create(['name' => 'Carlos'])->delete();
                         User::create(['name' => 'Juan']);
