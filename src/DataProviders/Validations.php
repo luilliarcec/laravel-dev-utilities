@@ -2,6 +2,8 @@
 
 namespace Luilliarcec\DevUtilities\DataProviders;
 
+use Closure;
+
 class Validations
 {
     public string|array $error;
@@ -29,7 +31,7 @@ class Validations
 
     protected function seed(array $data)
     {
-        if (is_callable($this->seed)) {
+        if ($this->seed instanceof Closure) {
             $callback = $this->seed;
             $callback($data);
         }
@@ -40,7 +42,7 @@ class Validations
         $value = $this->value;
 
         $this->data = array_merge($this->data, [
-            $this->field => is_callable($value)
+            $this->field => $value instanceof Closure
                 ? $value()
                 : $value
         ]);

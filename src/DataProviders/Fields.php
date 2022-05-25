@@ -2,6 +2,8 @@
 
 namespace Luilliarcec\DevUtilities\DataProviders;
 
+use Closure;
+
 class Fields
 {
     public string $parameters;
@@ -33,7 +35,7 @@ class Fields
             );
         }
 
-        if (is_callable($toggleable)) {
+        if ($toggleable instanceof Closure) {
             return $toggleable(
                 array_merge($this->dontSee, $this->see)
             );

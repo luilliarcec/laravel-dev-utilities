@@ -2,6 +2,8 @@
 
 namespace Luilliarcec\DevUtilities\DataProviders;
 
+use Closure;
+
 class Filters
 {
     protected string $prefix = 'filter';
@@ -24,7 +26,7 @@ class Filters
 
     public function init(mixed $filterable): void
     {
-        if (is_callable($this->seed)) {
+        if ($this->seed instanceof Closure) {
             $this->seed();
         } else {
             $this->data($filterable);
@@ -65,7 +67,7 @@ class Filters
             return $filterable::factory()->create([$this->field => $value]);
         }
 
-        if (is_callable($filterable)) {
+        if ($filterable instanceof Closure) {
             return $filterable([$this->field => $value]);
         }
 

@@ -2,6 +2,7 @@
 
 namespace Luilliarcec\DevUtilities\DataProviders;
 
+use Closure;
 use Illuminate\Support\Str;
 
 class Sorters
@@ -23,7 +24,7 @@ class Sorters
 
     public function init(mixed $sortable)
     {
-        if (is_callable($this->seed)) {
+        if ($this->seed instanceof Closure) {
             $this->seed();
         } else {
             $this->data($sortable);
@@ -54,7 +55,7 @@ class Sorters
             return $sortable::factory()->create([$this->field => $item]);
         }
 
-        if (is_callable($sortable)) {
+        if ($sortable instanceof Closure) {
             return $sortable([$this->field => $item]);
         }
 
