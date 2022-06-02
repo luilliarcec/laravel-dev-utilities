@@ -41,7 +41,7 @@ class DataProviderFilterTest extends TestCase
 
         $provider = new Filter(
             filter: 'first_name', see: 'Luis', dontSee: ['Carlos', 'Andres'],
-            seed  : fn() => throw new Exception('Faker exception caused by seed function called on init function')
+            seed  : fn () => throw new Exception('Faker exception caused by seed function called on init function')
         );
 
         $provider->init(false);
@@ -50,7 +50,7 @@ class DataProviderFilterTest extends TestCase
     /** @dataProvider filters */
     public function test_filter_data($filter)
     {
-        $this->assertFilterData(uri: '/filters', filter: $filter, filterable: fn($data) => User::create($data));
+        $this->assertFilterData(uri: '/filters', filter: $filter, filterable: fn ($data) => User::create($data));
     }
 
     public function filters(): array

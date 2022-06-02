@@ -28,7 +28,7 @@ class DataProviderSorterTest extends TestCase
 
         $provider = new Sorter(
             sort: 'first_name', data: ['Luis', 'Carlos', 'Andres'],
-            seed: fn() => throw new Exception('Faker exception caused by seed function called on init function')
+            seed: fn () => throw new Exception('Faker exception caused by seed function called on init function')
         );
 
         $provider->init(false);
@@ -37,7 +37,7 @@ class DataProviderSorterTest extends TestCase
     /** @dataProvider sorts */
     public function test_sort_data($sorter)
     {
-        $this->assertSortData(uri: '/sorts', sorter: $sorter, sortable: fn($data) => User::create($data));
+        $this->assertSortData(uri: '/sorts', sorter: $sorter, sortable: fn ($data) => User::create($data));
     }
 
     public function sorts(): array
