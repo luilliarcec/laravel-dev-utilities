@@ -18,7 +18,8 @@ trait HasLivewireValidations
             $component->call($method);
         }
 
-        return $component
-            ->assertHasErrors($validation->error);
+        return $validation->isValid
+            ? $component->assertHasNoErrors($validation->field)
+            : $component->assertHasErrors($validation->error);
     }
 }
