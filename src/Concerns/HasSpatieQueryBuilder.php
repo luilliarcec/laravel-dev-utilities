@@ -30,7 +30,7 @@ trait HasSpatieQueryBuilder
             );
         } else {
             $response->assertDontSee($filter->dontSee)
-                     ->assertSee($filter->see);;
+                     ->assertSee($filter->see);
         }
     }
 
