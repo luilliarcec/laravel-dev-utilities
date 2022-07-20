@@ -4,7 +4,7 @@ namespace Luilliarcec\DevUtilities\DataProviders\Concerns;
 
 trait HasBag
 {
-    public string $bag = 'default';
+    public ?string $bag = null;
 
     public function bag(string $bag): static
     {
@@ -13,7 +13,7 @@ trait HasBag
         return $this;
     }
 
-    public function getBag(): string
+    public function getBag(): ?string
     {
         return $this->bag;
     }
