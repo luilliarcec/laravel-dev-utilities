@@ -38,4 +38,9 @@ class Validation
                 : $value,
         ]);
     }
+
+    public function getBag(): string
+    {
+        return $this->bag ?? 'default';
+    }
 }
