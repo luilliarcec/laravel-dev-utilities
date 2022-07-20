@@ -21,7 +21,7 @@ class Sorter
         $this->parameters = $this->parameters();
     }
 
-    public function init(mixed $sortable)
+    public function init(mixed $sortable): void
     {
         if ($this->seed instanceof Closure) {
             $this->seed();
@@ -35,7 +35,7 @@ class Sorter
         return "$this->prefix=$this->sort";
     }
 
-    protected function seed()
+    protected function seed(): void
     {
         $callback = $this->seed;
         $callback();

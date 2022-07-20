@@ -22,14 +22,14 @@ class Validation
         $this->errorKey = $this->errorKey ?: $this->field;
     }
 
-    public function init(array $data = [])
+    public function init(array $data = []): void
     {
         $this->seed($data);
         $this->data();
         $this->error();
     }
 
-    protected function seed(array $data)
+    protected function seed(array $data): void
     {
         if ($this->seed instanceof Closure) {
             $callback = $this->seed;
@@ -37,7 +37,7 @@ class Validation
         }
     }
 
-    protected function data()
+    protected function data(): void
     {
         $value = $this->value;
 
@@ -48,7 +48,7 @@ class Validation
         ]);
     }
 
-    protected function error()
+    protected function error(): void
     {
         $this->error = $this->errorKey;
 

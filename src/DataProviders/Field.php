@@ -16,7 +16,7 @@ class Field
         $this->parameters = $this->parameters();
     }
 
-    public function init(mixed $toggleable)
+    public function init(mixed $toggleable): void
     {
         $this->factory($toggleable);
     }
