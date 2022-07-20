@@ -10,7 +10,7 @@ trait HasLivewireValidations
     {
         $validation->init();
 
-        foreach ($validation->data as $key => $value) {
+        foreach ($validation->getData() as $key => $value) {
             $component->set($key, $value);
         }
 
@@ -18,8 +18,8 @@ trait HasLivewireValidations
             $component->call($method);
         }
 
-        return $validation->isValid
-            ? $component->assertHasNoErrors($validation->field)
-            : $component->assertHasErrors($validation->error);
+        return $validation->isAnErrorExcludedRule()
+            ? $component->assertHasNoErrors($validation->getName())
+            : $component->assertHasErrors($validation->getError());
     }
 }

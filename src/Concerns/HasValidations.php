@@ -17,11 +17,11 @@ trait HasValidations
         $validation->init($data);
 
         $request = is_null($from)
-            ? $this->{$method}($uri, $validation->data)
-            : $this->from($from)->{$method}($uri, $validation->data);
+            ? $this->{$method}($uri, $validation->getData())
+            : $this->from($from)->{$method}($uri, $validation->getData());
 
-        return $validation->isValid
-            ? $request->assertValid($validation->field, $validation->bag)
-            : $request->assertInvalid($validation->error, $validation->bag);
+        return $validation->isAnErrorExcludedRule()
+            ? $request->assertValid($validation->getName(), $validation->getBag())
+            : $request->assertInvalid($validation->getError(), $validation->getBag());
     }
 }

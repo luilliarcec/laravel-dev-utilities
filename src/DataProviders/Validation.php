@@ -6,60 +6,36 @@ use Closure;
 
 class Validation
 {
-    public string|array $error;
+    use Concerns\HasName;
+    use Concerns\HasValue;
+    use Concerns\HasData;
+    use Concerns\HasSeed;
+    use Concerns\HasErrors;
+    use Concerns\HasBag;
 
-    public function __construct(
-        public string $field,
-        protected mixed $value = null,
-        public array $data = [],
-        protected mixed $seed = null,
-        protected string|null $errorKey = null,
-        protected string|null $rule = null,
-        protected string|null $message = null,
-        public string $bag = 'default',
-        public bool $isValid = false
-    ) {
-        $this->errorKey = $this->errorKey ?: $this->field;
+    public function __construct(string $name)
+    {
+        $this->name($name);
+    }
+
+    public static function make(string $name): static
+    {
+        return new static($name);
     }
 
     public function init(array $data = []): void
     {
         $this->seed($data);
-        $this->data();
-        $this->error();
     }
 
-    protected function seed(array $data): void
+    public function getData(): array
     {
-        if ($this->seed instanceof Closure) {
-            $callback = $this->seed;
-            $callback($data);
-        }
-    }
+        $value = $this->getValue();
 
-    protected function data(): void
-    {
-        $value = $this->value;
-
-        $this->data = array_merge($this->data, [
-            $this->field => $value instanceof Closure
+        return array_merge($this->data, [
+            $this->getName() => $value instanceof Closure
                 ? $value()
                 : $value,
         ]);
-    }
-
-    protected function error(): void
-    {
-        $this->error = $this->errorKey;
-
-        if ($this->message) {
-            $this->error = [
-                $this->errorKey => $this->message,
-            ];
-        } elseif ($this->rule) {
-            $this->error = [
-                $this->errorKey => $this->rule,
-            ];
-        }
     }
 }
