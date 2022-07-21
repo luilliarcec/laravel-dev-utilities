@@ -34,6 +34,15 @@ trait HasSpatieQueryBuilder
         }
     }
 
+    public function assertSortData(string $uri, Sorter $sorter, mixed $sortable): TestResponse
+    {
+        $sorter->init($sortable);
+
+        $query = $this->queryBuilderForSorters($sorter->getName(), $sorter->getOrden());
+
+        return $this->get("$uri?$query")->assertSeeInOrder($sorter->getOrderedRecords());
+    }
+
     private function queryBuilderForFilters(string $name, mixed $value): string
     {
         $parameter = config('query-builder.parameters.filter', 'filter');
@@ -47,15 +56,6 @@ trait HasSpatieQueryBuilder
                 return sprintf('%s[%s]=%s', $parameter, $name, $item);
             })
             ->implode('&');
-    }
-
-    public function assertSortData(string $uri, Sorter $sorter, mixed $sortable): TestResponse
-    {
-        $sorter->init($sortable);
-
-        $query = $this->queryBuilderForSorters($sorter->getName(), $sorter->getOrden());
-
-        return $this->get("$uri?$query")->assertSeeInOrder($sorter->getOrderedRecords());
     }
 
     private function queryBuilderForSorters(string $name, string $order): string
