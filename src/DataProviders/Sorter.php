@@ -2,62 +2,42 @@
 
 namespace Luilliarcec\DevUtilities\DataProviders;
 
-use Closure;
 use Illuminate\Support\Str;
 
 class Sorter
 {
-    public string $parameters;
-    protected string $prefix = 'sort';
+    use Concerns\HasName;
+    use Concerns\HasField;
+    use Concerns\HasSeed;
+    use Concerns\HasOrder;
+    use Concerns\HasFactory;
 
-    public function __construct(
-        public string $sort,
-        public array $data,
-        protected array $values = [],
-        protected ?string $field = null,
-        protected mixed $seed = null
-    ) {
-        $this->field = $this->field ?: Str::replaceFirst('-', '', $this->sort);
-        $this->parameters = $this->parameters();
+    public function __construct(string $name)
+    {
+        $this->name($name);
+    }
+
+    public static function make(string $name): static
+    {
+        return new static($name);
     }
 
     public function init(mixed $sortable): void
     {
-        if ($this->seed instanceof Closure) {
-            $this->seed();
-        } else {
-            $this->data($sortable);
+        if (!$this->seed()) {
+            $this->factoryRecords($sortable);
         }
     }
 
-    protected function parameters(): string
+    protected function factoryRecords(mixed $sortable): void
     {
-        return "$this->prefix=$this->sort";
-    }
-
-    protected function seed(): void
-    {
-        $callback = $this->seed;
-        $callback();
-    }
-
-    protected function data(mixed $sortable)
-    {
-        collect($this->values ?: $this->data)
+        collect($this->getOrderedRecords())
             ->shuffle()
             ->each(fn ($item) => $this->factory($sortable, $item));
     }
 
-    protected function factory(mixed $sortable, mixed $item)
+    public function getField(): string
     {
-        if (is_string($sortable)) {
-            return $sortable::factory()->create([$this->field => $item]);
-        }
-
-        if ($sortable instanceof Closure) {
-            return $sortable([$this->field => $item]);
-        }
-
-        return $sortable;
+        return $this->field ?? Str::replaceFirst('-', '', $this->getName());
     }
 }

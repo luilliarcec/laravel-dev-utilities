@@ -14,22 +14,20 @@ class DataProviderSorterTest extends TestCase
 
     public function test_that_the_data_is_accessible()
     {
-        $provider = new Sorter(
-            sort: 'first_name', data: ['Luis', 'Carlos', 'Andres'],
-        );
+        $provider = Sorter::make('first_name')
+            ->orderedRecords(['Luis', 'Carlos', 'Andres']);
 
-        $this->assertEquals('first_name', $provider->sort);
-        $this->assertEquals(['Luis', 'Carlos', 'Andres'], $provider->data);
+        $this->assertEquals('first_name', $provider->getName());
+        $this->assertEquals(['Luis', 'Carlos', 'Andres'], $provider->getOrderedRecords());
     }
 
     public function test_that_seed_is_executed_in_the_init_function()
     {
         $this->expectExceptionMessage('Faker exception caused by seed function called on init function');
 
-        $provider = new Sorter(
-            sort: 'first_name', data: ['Luis', 'Carlos', 'Andres'],
-            seed: fn () => throw new Exception('Faker exception caused by seed function called on init function')
-        );
+        $provider = Sorter::make('first_name')
+            ->orderedRecords(['Luis', 'Carlos', 'Andres'])
+            ->seeder(fn() => throw new Exception('Faker exception caused by seed function called on init function'));
 
         $provider->init(false);
     }
@@ -44,15 +42,14 @@ class DataProviderSorterTest extends TestCase
     {
         return [
             'sort by asc name' => [
-                new Sorter(sort: 'name', data: ['ANDRES', 'BEN', 'CARLOS']),
+                Sorter::make('name')
+                    ->orderedRecords(['ANDRES', 'BEN', 'CARLOS']),
             ],
 
             'sort by asc -name' => [
-                new Sorter(sort: '-name', data: ['CARLOS', 'BEN', 'ANDRES']),
-            ],
-
-            'sort by asc name with values' => [
-                new Sorter(sort: 'name', data: ['andres', 'ben', 'carlos'], values: ['andres', 'ben', 'carlos']),
+                Sorter::make('name')
+                    ->orderedRecords(['CARLOS', 'BEN', 'ANDRES'])
+                    ->desc(),
             ],
         ];
     }

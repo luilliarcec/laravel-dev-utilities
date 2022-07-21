@@ -34,7 +34,7 @@ trait HasSpatieQueryBuilder
         }
     }
 
-    private function queryBuilderForFilters($name, mixed $value): string
+    private function queryBuilderForFilters(string $name, mixed $value): string
     {
         $parameter = config('query-builder.parameters.filter', 'filter');
 
@@ -53,7 +53,17 @@ trait HasSpatieQueryBuilder
     {
         $sorter->init($sortable);
 
-        return $this->get("$uri?$sorter->parameters")
-                    ->assertSeeInOrder($sorter->data);
+        $query = $this->queryBuilderForSorters($sorter->getName(), $sorter->getOrden());
+
+        return $this->get("$uri?$query")->assertSeeInOrder($sorter->getOrderedRecords());
+    }
+
+    private function queryBuilderForSorters(string $name, string $order): string
+    {
+        $parameter = config('query-builder.parameters.sort', 'sort');
+
+        $name = $order == 'desc' ? "-$name" : $name;
+
+        return "$parameter=$name";
     }
 }
