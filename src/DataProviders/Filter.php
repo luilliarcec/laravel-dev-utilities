@@ -6,54 +6,53 @@ use Closure;
 
 class Filter
 {
-    public function __construct(
-        public string $filter,
-        public mixed $see,
-        public array $dontSee,
-        public mixed $value = null,
-        public ?string $field = null,
-        public ?string $bag = null,
-        protected mixed $seed = null
-    ) {
-        $this->field = $this->field ?: $this->filter;
+    use Concerns\HasName;
+    use Concerns\HasValue;
+    use Concerns\HasBag;
+    use Concerns\HasSeed;
+    use Concerns\HasField;
+    use Concerns\HasRecords;
 
-        $this->value = $this->value ?: (is_string($this->see) ? $this->see : null);
+    public function __construct(string $name)
+    {
+        $this->name($name);
+    }
+
+    public static function make(string $name): static
+    {
+        return new static($name);
     }
 
     public function init(mixed $filterable): void
     {
-        if ($this->seed instanceof Closure) {
-            $this->seed();
-        } else {
-            $this->data($filterable);
+        if (! $this->seed()) {
+            $this->factoryRecords($filterable);
         }
     }
 
-    protected function seed(): void
+    protected function factoryRecords(mixed $filterable): void
     {
-        $callback = $this->seed;
-        $callback();
-    }
+        collect($this->getDontVisibleRecords())
+            ->each(fn($item) => $this->factory($filterable, $item));
 
-    protected function data(mixed $filterable): void
-    {
-        collect($this->dontSee)->each(function ($item) use ($filterable) {
-            return $this->factory($filterable, $item);
-        });
-
-        $this->factory($filterable, $this->see);
+        $this->factory($filterable, $this->getVisibleRecords());
     }
 
     protected function factory(mixed $filterable, mixed $value)
     {
         if (is_string($filterable)) {
-            return $filterable::factory()->create([$this->field => $value]);
+            return $filterable::factory()->create([$this->getField() => $value]);
         }
 
         if ($filterable instanceof Closure) {
-            return $filterable([$this->field => $value]);
+            return $filterable([$this->getField() => $value]);
         }
 
         return $filterable;
+    }
+
+    public function getValue(): mixed
+    {
+        return $this->value ?? (is_string($record = $this->getVisibleRecords()) ? $record : null);
     }
 }

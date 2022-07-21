@@ -11,13 +11,13 @@ trait HasFilamentTableBuilder
     {
         $filter->init($filterable);
 
-        $component->set($filter->filter, $filter->value);
+        $component->set($filter->getName(), $filter->getValue());
 
-        foreach (Arr::wrap($filter->see) as $value) {
+        foreach (Arr::wrap($filter->getVisibleRecords()) as $value) {
             $component->assertSee($value);
         }
 
-        foreach ($filter->dontSee as $value) {
+        foreach ($filter->getDontVisibleRecords() as $value) {
             $component->assertDontSee($value);
         }
     }

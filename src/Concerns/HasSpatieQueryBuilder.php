@@ -12,39 +12,39 @@ trait HasSpatieQueryBuilder
     {
         $filter->init($filterable);
 
-        $query = $this->queryBuilderForFilters($filter->filter, $filter->value);
+        $query = $this->queryBuilderForFilters($filter->getName(), $filter->getValue());
 
         $response = $this->get("$uri?$query")->assertSuccessful();
 
-        if ($filter->bag) {
+        if ($bag = $filter->getBag()) {
             $this->assertTrue(
-                $response->original->{$filter->bag}
-                    ->where($filter->field, $filter->see)
+                $response->original->{$bag}
+                    ->where($filter->getField(), $filter->getVisibleRecords())
                     ->isNotEmpty()
             );
 
             $this->assertTrue(
-                $response->original->{$filter->bag}
-                    ->whereIn($filter->field, $filter->dontSee)
+                $response->original->{$bag}
+                    ->whereIn($filter->getField(), $filter->getDontVisibleRecords())
                     ->isEmpty(),
             );
         } else {
-            $response->assertDontSee($filter->dontSee)
-                     ->assertSee($filter->see);
+            $response->assertDontSee($filter->getDontVisibleRecords())
+                     ->assertSee($filter->getVisibleRecords());
         }
     }
 
-    private function queryBuilderForFilters($filter, mixed $value): string
+    private function queryBuilderForFilters($name, mixed $value): string
     {
         $parameter = config('query-builder.parameters.filter', 'filter');
 
         return collect($value)
-            ->transform(function ($item) use ($parameter, $filter, $value) {
+            ->transform(function ($item) use ($parameter, $name, $value) {
                 if (is_array($value)) {
-                    return sprintf('%s[%s][]=%s', $parameter, $filter, $item);
+                    return sprintf('%s[%s][]=%s', $parameter, $name, $item);
                 }
 
-                return sprintf('%s[%s]=%s', $parameter, $filter, $item);
+                return sprintf('%s[%s]=%s', $parameter, $name, $item);
             })
             ->implode('&');
     }

@@ -15,11 +15,15 @@ trait HasSeed
         return $this;
     }
 
-    protected function seed(array $data = []): void
+    protected function seed(array $data = []): bool
     {
         if ($this->seed instanceof Closure) {
             $callback = $this->seed;
             $callback($data);
+
+            return true;
         }
+
+        return false;
     }
 }
