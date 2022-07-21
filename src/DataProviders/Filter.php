@@ -12,6 +12,7 @@ class Filter
     use Concerns\HasSeed;
     use Concerns\HasField;
     use Concerns\HasRecords;
+    use Concerns\HasFactory;
 
     public function __construct(string $name)
     {
@@ -36,19 +37,6 @@ class Filter
             ->each(fn($item) => $this->factory($filterable, $item));
 
         $this->factory($filterable, $this->getVisibleRecords());
-    }
-
-    protected function factory(mixed $filterable, mixed $value)
-    {
-        if (is_string($filterable)) {
-            return $filterable::factory()->create([$this->getField() => $value]);
-        }
-
-        if ($filterable instanceof Closure) {
-            return $filterable([$this->getField() => $value]);
-        }
-
-        return $filterable;
     }
 
     public function getValue(): mixed
