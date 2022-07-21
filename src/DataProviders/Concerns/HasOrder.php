@@ -5,31 +5,31 @@ namespace Luilliarcec\DevUtilities\DataProviders\Concerns;
 trait HasOrder
 {
     protected array $orderedRecords = [];
-    protected string $orden = 'asc';
+    protected string $orderDirection = 'asc';
 
     public function asc(): static
     {
-        $this->orden = 'asc';
+        $this->orderDirection = 'asc';
 
         return $this;
     }
 
     public function desc(): static
     {
-        $this->orden = 'desc';
+        $this->orderDirection = 'desc';
 
         return $this;
     }
 
-    public function getOrden(): string
+    public function getOrderDirection(): string
     {
-        return $this->orden;
+        return $this->orderDirection;
     }
 
-    public function orderedRecords(array $orderedRecords, string $order = 'asc'): static
+    public function orderedRecords(array $orderedRecords, string $direction = 'asc'): static
     {
         $this->orderedRecords = $orderedRecords;
-        $this->orden = $order;
+        $this->orderDirection = $direction;
 
         return $this;
     }

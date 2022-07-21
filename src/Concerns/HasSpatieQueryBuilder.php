@@ -38,7 +38,7 @@ trait HasSpatieQueryBuilder
     {
         $sorter->init($sortable);
 
-        $query = $this->queryBuilderForSorters($sorter->getName(), $sorter->getOrden());
+        $query = $this->queryBuilderForSorters($sorter->getName(), $sorter->getOrderDirection());
 
         return $this->get("$uri?$query")->assertSeeInOrder($sorter->getOrderedRecords());
     }
